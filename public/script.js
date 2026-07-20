@@ -54,32 +54,45 @@ function updateLabels() {
 
   if (labelsEnabled) {
     markers.forEach((m, i) => {
-      // Dynamic offset based on zoom level
-      const zoom = map.getZoom();
-      const baseOffset = 0.9;
-      const offset = (12 - zoom) * baseOffset; 
-      // smaller offset when zoomed in, larger when zoomed out
+      const text = `${m.loc.name}${m.loc.description ? " - " + m.loc.description : ""}`;
+      const textLength = text.length;
 
-      const offsetLat = m.loc.lat + (i % 2 === 0 ? offset : -offset);
-      const offsetLon = m.loc.lon + (i % 3 === 0 ? offset : -offset);
+      if (textLength > 25) {
+        // Longer text → use leader line + offset box
+        const zoom = map.getZoom();
+        const baseOffset = 0.8; // adjust for line length
+        const offset = (12 - zoom) * baseOffset;
 
-      // Leader line from landmark to label box
-      const line = L.polyline([[m.loc.lat, m.loc.lon], [offsetLat, offsetLon]], {
-        color: "darkred",
-        weight: 1
-      }).addTo(map);
+        const offsetLat = m.loc.lat + (i % 2 === 0 ? offset : -offset);
+        const offsetLon = m.loc.lon + (i % 3 === 0 ? offset : -offset);
 
-      // Label box at offset position
-      const labelIcon = L.divIcon({
-        className: 'highlight-label-box',
-        html: `<div>${m.loc.name}${m.loc.description ? " - " + m.loc.description : ""}</div>`,
-        iconSize: null
-      });
-      const labelMarker = L.marker([offsetLat, offsetLon], { icon: labelIcon }).addTo(map);
+        // Leader line
+        const line = L.polyline([[m.loc.lat, m.loc.lon], [offsetLat, offsetLon]], {
+          color: "darkred",
+          weight: 1
+        }).addTo(map);
 
-      // Track both line + label
-      labelElements.push(line);
-      labelElements.push(labelMarker);
+        // Label box
+        const labelIcon = L.divIcon({
+          className: 'highlight-label-box',
+          html: `<div>${text}</div>`,
+          iconSize: null
+        });
+        const labelMarker = L.marker([offsetLat, offsetLon], { icon: labelIcon }).addTo(map);
+
+        labelElements.push(line);
+        labelElements.push(labelMarker);
+      } else {
+        // Short text → place box directly at marker
+        const labelIcon = L.divIcon({
+          className: 'highlight-label-box',
+          html: `<div>${text}</div>`,
+          iconSize: null
+        });
+        const labelMarker = L.marker([m.loc.lat, m.loc.lon], { icon: labelIcon }).addTo(map);
+
+        labelElements.push(labelMarker);
+      }
     });
   }
 }
