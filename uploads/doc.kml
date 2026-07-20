@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>Untitled layer</name>
+    <Style id="icon-1899-1A237E-labelson">
+      <IconStyle>
+        <scale>1</scale>
+        <Icon>
+          <href>images/icon-1.png</href>
+        </Icon>
+        <hotSpot x="32" xunits="pixels" y="64" yunits="insetPixels"/>
+      </IconStyle>
+    </Style>
+    <Style id="icon-1899-1A237E-labelson-nodesc">
+      <IconStyle>
+        <scale>1</scale>
+        <Icon>
+          <href>images/icon-1.png</href>
+        </Icon>
+        <hotSpot x="32" xunits="pixels" y="64" yunits="insetPixels"/>
+      </IconStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Placemark>
+      <name>Jhansi Fort</name>
+      <styleUrl>#icon-1899-1A237E-labelson-nodesc</styleUrl>
+      <Point>
+        <coordinates>
+          78.5765778,25.457517,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Red Fort (Lal Qila)</name>
+      <styleUrl>#icon-1899-1A237E-labelson-nodesc</styleUrl>
+      <Point>
+        <coordinates>
+          77.2410203,28.6561592,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Cellular Jail (Kaala Pani)</name>
+      <description>Veer Savarkar and Batukeshwar Dutt</description>
+      <styleUrl>#icon-1899-1A237E-labelson</styleUrl>
+      <Point>
+        <coordinates>
+          92.7478601,11.6747447,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Jallianwala Bagh</name>
+      <styleUrl>#icon-1899-1A237E-labelson-nodesc</styleUrl>
+      <Point>
+        <coordinates>
+          74.8802901,31.6205869,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Swaraj Bhawan Museum</name>
+      <description>Residence of Nehru Family</description>
+      <styleUrl>#icon-1899-1A237E-labelson</styleUrl>
+      <Point>
+        <coordinates>
+          81.8604093,25.4599488,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>August Kranti Maidan (Quit India Movement)</name>
+      <description>Quit India Movement</description>
+      <styleUrl>#icon-1899-1A237E-labelson</styleUrl>
+      <Point>
+        <coordinates>
+          72.8103294,18.9627982,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Sabarmati Ashram, Ahmedabad  </name>
+      <description><![CDATA[Harijan Ashram - Gandhiji's base !]]></description>
+      <styleUrl>#icon-1899-1A237E-labelson</styleUrl>
+      <Point>
+        <coordinates>
+          72.5803299,23.0606577,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Azad Maidan</name>
+      <description>Annie Besant, Bal Gangadhar Tilak</description>
+      <styleUrl>#icon-1899-1A237E-labelson</styleUrl>
+      <Point>
+        <coordinates>
+          72.8312991,18.9395305,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Alipore Central Correctional Home</name>
+      <description>Subhash Chandra Bose and Aurobindo Ghosh </description>
+      <styleUrl>#icon-1899-1A237E-labelson</styleUrl>
+      <Point>
+        <coordinates>
+          88.3387889,22.5241048,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Champaran</name>
+      <description>Place where Gandhi Stayed during civil disobedience 1917</description>
+      <styleUrl>#icon-1899-1A237E-labelson</styleUrl>
+      <Point>
+        <coordinates>
+          84.5201204,26.8220878,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Kakori</name>
+      <styleUrl>#icon-1899-1A237E-labelson-nodesc</styleUrl>
+      <Point>
+        <coordinates>
+          80.785171,26.8693966,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Chauri Chaura</name>
+      <description>Chaura Chauri incident</description>
+      <styleUrl>#icon-1899-1A237E-labelson</styleUrl>
+      <Point>
+        <coordinates>
+          83.5856087,26.650797,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Lahore</name>
+      <description>Congress Session, 1929 - declaration of independence of India</description>
+      <styleUrl>#icon-1899-1A237E-labelson</styleUrl>
+      <Point>
+        <coordinates>
+          74.3587473,31.5203696,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Dandi</name>
+      <styleUrl>#icon-1899-1A237E-labelson-nodesc</styleUrl>
+      <Point>
+        <coordinates>
+          72.8050507,20.8883079,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Aga Khan Palace</name>
+      <description>Kastubra Gandhi took last breadth here</description>
+      <styleUrl>#icon-1899-1A237E-labelson</styleUrl>
+      <Point>
+        <coordinates>
+          73.9018114,18.5528556,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Victoria Memorial</name>
+      <description>Bengal renaissance</description>
+      <styleUrl>#icon-1899-1A237E-labelson</styleUrl>
+      <Point>
+        <coordinates>
+          88.3425578,22.5448082,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Parliament House, New Delhi</name>
+      <styleUrl>#icon-1899-1A237E-labelson-nodesc</styleUrl>
+      <Point>
+        <coordinates>
+          77.2081851,28.6172368,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Gateway Of India Mumbai</name>
+      <description>departure of the last British troops,1948</description>
+      <styleUrl>#icon-1899-1A237E-labelson</styleUrl>
+      <Point>
+        <coordinates>
+          72.8346543,18.9219841,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name><![CDATA[Mangal Pandey Park - Mangal Pandey's hanging place]]></name>
+      <description>Mangal Pandey hanged here</description>
+      <styleUrl>#icon-1899-1A237E-labelson</styleUrl>
+      <Point>
+        <coordinates>
+          88.3526731,22.7613423,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Jhansi Fort</name>
+      <description>earliest revolts - 1857 revolt</description>
+      <styleUrl>#icon-1899-1A237E-labelson</styleUrl>
+      <Point>
+        <coordinates>
+          78.5765778,25.457517,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>AGA KHAN PALACE - Arrest place Gandhiji</name>
+      <description>1942 - Gandhi, Kasturba, Secretary, Pyarelal brought here and arrested. Jail for Congress Working committee members</description>
+      <styleUrl>#icon-1899-1A237E-labelson</styleUrl>
+      <Point>
+        <coordinates>
+          73.9018114,18.5528556,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Fort Saint George</name>
+      <description>One of cornerstones in establishing British rules in India</description>
+      <styleUrl>#icon-1899-1A237E-labelson</styleUrl>
+      <Point>
+        <coordinates>
+          80.2864862,13.0813203,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Mubarak Mandi Palace</name>
+      <description>Anglo Sikh war 1845-46 resulting in ending formation of treaty of Amritsar</description>
+      <styleUrl>#icon-1899-1A237E-labelson</styleUrl>
+      <Point>
+        <coordinates>
+          74.8745093,32.7393379,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Original East India Company factory landmark</name>
+      <description>1613 (Site not available anymore)</description>
+      <styleUrl>#icon-1899-1A237E-labelson</styleUrl>
+      <Point>
+        <coordinates>
+          72.8208985,21.2013745,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Barrackpore cantonment</name>
+      <styleUrl>#icon-1899-1A237E-labelson-nodesc</styleUrl>
+      <Point>
+        <coordinates>
+          88.3668374,22.7629385,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Alfred Park - Amar Shaheed Chandrashekhar Azad Death Point</name>
+      <description>Alfred Park</description>
+      <styleUrl>#icon-1899-1A237E-labelson</styleUrl>
+      <Point>
+        <coordinates>
+          81.851847,25.4571677,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Lahore</name>
+      <styleUrl>#icon-1899-1A237E-labelson-nodesc</styleUrl>
+      <Point>
+        <coordinates>
+          74.3587473,31.5203696,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Chattogram</name>
+      <description>armor depot raided in 1930 by Surya Sen</description>
+      <styleUrl>#icon-1899-1A237E-labelson</styleUrl>
+      <Point>
+        <coordinates>
+          91.8348606,22.3752075,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Vedaranyam</name>
+      <description>Vedaranyam Salt Satyagraha 1930</description>
+      <styleUrl>#icon-1899-1A237E-labelson</styleUrl>
+      <Point>
+        <coordinates>
+          79.8494647,10.3773716,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Yerawada Central Jail</name>
+      <styleUrl>#icon-1899-1A237E-labelson-nodesc</styleUrl>
+      <Point>
+        <coordinates>
+          73.879711,18.5529226,0
+        </coordinates>
+      </Point>
+    </Placemark>
+  </Document>
+</kml>
