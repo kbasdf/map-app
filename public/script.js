@@ -6,16 +6,18 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
 
-// Custom icon
+// Custom icon for landmarks
 const landmarkIcon = L.icon({
-  iconUrl: 'images/icon-1.png',   // ✅ now served from uploads
+  iconUrl: 'images/icon-1.png',
   iconSize: [32, 32],
   iconAnchor: [16, 32],
   popupAnchor: [0, -32]
 });
 
-// Store markers globally so we can toggle labels later
+// Store markers + labels globally
 let markers = [];
+let labelElements = [];
+let labelsEnabled = false;
 
 // ✅ Fetch parsed locations from backend
 fetch("/locations")
@@ -38,22 +40,46 @@ fetch("/locations")
 
 // ✅ Checkbox toggle logic
 document.getElementById("highlightToggle").addEventListener("change", function (e) {
-  if (e.target.checked) {
-    // Show small text labels near markers
-    markers.forEach(m => {
-      const label = L.tooltip({
-        permanent: true,
-        direction: "right",
-        offset: [10, 0],
-        className: "highlight-label"
-      })
-        .setContent(`${m.loc.name} - ${m.loc.description || ""}`);
-      m.marker.bindTooltip(label).openTooltip();
-    });
-  } else {
-    // Remove labels
-    markers.forEach(m => {
-      m.marker.unbindTooltip();
+  labelsEnabled = e.target.checked;
+  updateLabels();
+});
+
+// ✅ Update labels whenever zoom changes
+map.on("zoomend", updateLabels);
+
+function updateLabels() {
+  // Remove existing lines + labels
+  labelElements.forEach(el => map.removeLayer(el));
+  labelElements = [];
+
+  if (labelsEnabled) {
+    markers.forEach((m, i) => {
+      // Dynamic offset based on zoom level
+      const zoom = map.getZoom();
+      const baseOffset = 0.9;
+      const offset = (12 - zoom) * baseOffset; 
+      // smaller offset when zoomed in, larger when zoomed out
+
+      const offsetLat = m.loc.lat + (i % 2 === 0 ? offset : -offset);
+      const offsetLon = m.loc.lon + (i % 3 === 0 ? offset : -offset);
+
+      // Leader line from landmark to label box
+      const line = L.polyline([[m.loc.lat, m.loc.lon], [offsetLat, offsetLon]], {
+        color: "darkred",
+        weight: 1
+      }).addTo(map);
+
+      // Label box at offset position
+      const labelIcon = L.divIcon({
+        className: 'highlight-label-box',
+        html: `<div>${m.loc.name}${m.loc.description ? " - " + m.loc.description : ""}</div>`,
+        iconSize: null
+      });
+      const labelMarker = L.marker([offsetLat, offsetLon], { icon: labelIcon }).addTo(map);
+
+      // Track both line + label
+      labelElements.push(line);
+      labelElements.push(labelMarker);
     });
   }
-});
+}
