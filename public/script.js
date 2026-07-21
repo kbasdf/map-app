@@ -19,6 +19,11 @@ let markers = [];
 let labelElements = [];
 let labelsEnabled = false;
 
+// Define reference centers
+const northCenter = { lat: 20, lon: 100 };
+const middleCenter = { lat: 22.97, lon: 78.65 };
+const southCenter = { lat: 10, lon: 78 };
+
 // ✅ Fetch parsed locations from backend
 fetch("/locations")
   .then(res => res.json())
@@ -30,7 +35,6 @@ fetch("/locations")
       markers.push({ marker, loc });
     });
 
-    // ✅ Auto‑center map on all markers
     if (markers.length > 0) {
       const group = L.featureGroup(markers.map(m => m.marker));
       map.fitBounds(group.getBounds());
@@ -48,23 +52,37 @@ document.getElementById("highlightToggle").addEventListener("change", function (
 map.on("zoomend", updateLabels);
 
 function updateLabels() {
-  // Remove existing lines + labels
   labelElements.forEach(el => map.removeLayer(el));
   labelElements = [];
 
   if (labelsEnabled) {
-    markers.forEach((m, i) => {
+    markers.forEach((m) => {
       const text = `${m.loc.name}${m.loc.description ? " - " + m.loc.description : ""}`;
       const textLength = text.length;
 
-      if (textLength > 25) {
-        // Longer text → use leader line + offset box
+      if (textLength > 20) {
         const zoom = map.getZoom();
-        const baseOffset = 0.8; // adjust for line length
+        const baseOffset = 1.0;
         const offset = (12 - zoom) * baseOffset;
 
-        const offsetLat = m.loc.lat + (i % 2 === 0 ? offset : -offset);
-        const offsetLon = m.loc.lon + (i % 3 === 0 ? offset : -offset);
+        let offsetLat = m.loc.lat;
+        let offsetLon = m.loc.lon;
+
+        // Zone logic — only horizontal lines
+        if (m.loc.lat >= 23) {
+          // North India
+          offsetLon = m.loc.lon + (m.loc.lon >= northCenter.lon ? offset : -offset);
+        } else if (m.loc.lat <= 15) {
+          // South India
+          if (m.loc.lat <= southCenter.lat) {
+            offsetLon = m.loc.lon + offset; // push right
+          } else {
+            offsetLon = m.loc.lon - offset; // push left
+          }
+        } else {
+          // Middle India
+          offsetLon = m.loc.lon + (m.loc.lon >= middleCenter.lon ? offset : -offset);
+        }
 
         // Leader line
         const line = L.polyline([[m.loc.lat, m.loc.lon], [offsetLat, offsetLon]], {
@@ -83,7 +101,7 @@ function updateLabels() {
         labelElements.push(line);
         labelElements.push(labelMarker);
       } else {
-        // Short text → place box directly at marker
+        // Short text → box directly at marker
         const labelIcon = L.divIcon({
           className: 'highlight-label-box',
           html: `<div>${text}</div>`,
