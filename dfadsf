@@ -1,0 +1,35 @@
+[33mcommit 26a051adbd50a4292fbcaa66751308b8d7ab2c94[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: unknown <kashishbhasin99@yahoo.com>
+Date:   Tue Jul 21 10:55:18 2026 +0530
+
+    horizontal line markers
+
+[33mcommit a714faabf789d487fb1da77f01f8876b58bcf16c[m
+Author: unknown <kashishbhasin99@yahoo.com>
+Date:   Mon Jul 20 21:13:54 2026 +0530
+
+    text length greater than 15 will use line markers ONLY
+
+[33mcommit b61fde5af0a25d4d3826a4d4606d82ad0a137efb[m
+Author: unknown <kashishbhasin99@yahoo.com>
+Date:   Mon Jul 20 21:05:54 2026 +0530
+
+    added line - markers for landmarks
+
+[33mcommit a95f5fd5083d874ada00065e00382582f7742215[m
+Author: unknown <kashishbhasin99@yahoo.com>
+Date:   Mon Jul 20 19:41:46 2026 +0530
+
+    added checkbox - show name description on map
+
+[33mcommit c3190b15df9ec9f84896c66ba14215c3756a3d72[m
+Author: unknown <kashishbhasin99@yahoo.com>
+Date:   Mon Jul 20 19:33:21 2026 +0530
+
+    second commit - able to see locations now
+
+[33mcommit 15024f20b0624bbc91ce5205ecfc9db592415374[m
+Author: unknown <kashishbhasin99@yahoo.com>
+Date:   Mon Jul 20 17:30:34 2026 +0530
+
+    first commit

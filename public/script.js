@@ -1,12 +1,96 @@
-// ✅ Initialize the map
-const map = L.map('map').setView([22.9734, 78.6569], 5); // Center on India
+const map = L.map('map').setView([22.9734, 78.6569], 5);
 
-// ✅ Add OpenStreetMap tiles
+const squares = [
+  L.polygon([
+    [36.177, 72.60],[32.40238,73.220],[32.3838,79.966],[36.76,80.559]
+  ]),
+  L.polygon([
+    [32.402,73.220],[28.5061,71.15],[28.28,91.61093],[32.38,79.96]
+  ]),
+  L.polygon([
+    [28.5061,71.15],[22.162,67.27037],[23.538,93.9891],[28.280,91.61093]
+  ]),
+  L.polygon([
+    [22.162,67.27037],[19.34869,72.29794],[19.34,86.62411],[23.538,93.9891]
+  ]),
+  L.polygon([
+    [19.34869,72.29794],[8.7853,75.110],[8.00277,77.83505],[19.34,86.62411]
+  ])
+];
+
+// Debug overlay
+squares.forEach(sq => sq.addTo(map).setStyle({color:'red', fillOpacity:0.1}));
+
+function findSquare(latlng) {
+  const pt = turf.point([latlng.lng, latlng.lat]);
+  for (let i = 0; i < squares.length; i++) {
+    const poly = squares[i].toGeoJSON();
+    if (turf.booleanPointInPolygon(pt, poly)) {
+      return squares[i];
+    }
+  }
+  return null;
+}
+
+function placeInfoBox(latlng, text) {
+  const square = findSquare(latlng);
+  if (!square) return;
+
+  const poly = square.toGeoJSON();
+  const centroid = turf.centroid(poly);
+  const centroidLng = centroid.geometry.coordinates[0];
+
+  // Anchor at landmark’s longitude and polygon’s vertical span
+  const bounds = square.getBounds();
+  let offsetLat = latlng.lat;
+  let offsetLng;
+
+  // Decide push direction based on landmark vs centroid
+  if (latlng.lng < centroidLng) {
+    offsetLng = bounds.getWest();
+  } else {
+    offsetLng = bounds.getEast();
+  }
+
+  // Convert to screen point
+  let point = map.latLngToContainerPoint([offsetLat, offsetLng]);
+
+  // Push outward in pixels
+  if (latlng.lng < centroidLng) {
+    point.x -= 50; // push left
+  } else {
+    point.x += 50; // push right
+  }
+
+  // Convert back to lat/lng
+  let offsetLatLng = map.containerPointToLatLng(point);
+
+  // Ensure not inside any polygon
+  let testPt = turf.point([offsetLatLng.lng, offsetLatLng.lat]);
+  let insideAnother = squares.some(sq => turf.booleanPointInPolygon(testPt, sq.toGeoJSON()));
+
+  while (insideAnother) {
+    if (latlng.lng < centroidLng) {
+      point.x -= 50;
+    } else {
+      point.x += 50;
+    }
+    offsetLatLng = map.containerPointToLatLng(point);
+    testPt = turf.point([offsetLatLng.lng, offsetLatLng.lat]);
+    insideAnother = squares.some(sq => turf.booleanPointInPolygon(testPt, sq.toGeoJSON()));
+  }
+
+  infoBox.style.left = point.x + "px";
+  infoBox.style.top  = point.y + "px";
+  infoBox.textContent = text;
+}
+
+
+
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
 
-// Custom icon for landmarks
 const landmarkIcon = L.icon({
   iconUrl: 'images/icon-1.png',
   iconSize: [32, 32],
@@ -14,21 +98,13 @@ const landmarkIcon = L.icon({
   popupAnchor: [0, -32]
 });
 
-// Store markers + labels globally
 let markers = [];
-let labelElements = [];
-let labelsEnabled = false;
+let infoBox;
 
-// Define reference centers
-const northCenter = { lat: 20, lon: 100 };
-const middleCenter = { lat: 22.97, lon: 78.65 };
-const southCenter = { lat: 10, lon: 78 };
-
-// ✅ Fetch parsed locations from backend
 fetch("/locations")
   .then(res => res.json())
   .then(data => {
-    data.locations.forEach(loc => {
+    data.locations.forEach((loc, index) => {
       const marker = L.marker([loc.lat, loc.lon], { icon: landmarkIcon })
         .addTo(map)
         .bindPopup(`<b>${loc.name}</b><br>${loc.description || ""}`);
@@ -38,79 +114,22 @@ fetch("/locations")
     if (markers.length > 0) {
       const group = L.featureGroup(markers.map(m => m.marker));
       map.fitBounds(group.getBounds());
+
+      infoBox = document.createElement("div");
+      infoBox.className = "infoBox";
+      infoBox.textContent = "test data";
+      document.body.appendChild(infoBox);
     }
   })
   .catch(err => console.error("Error fetching locations:", err));
 
-// ✅ Checkbox toggle logic
-document.getElementById("highlightToggle").addEventListener("change", function (e) {
-  labelsEnabled = e.target.checked;
-  updateLabels();
-});
-
-// ✅ Update labels whenever zoom changes
-map.on("zoomend", updateLabels);
-
-function updateLabels() {
-  labelElements.forEach(el => map.removeLayer(el));
-  labelElements = [];
-
-  if (labelsEnabled) {
-    markers.forEach((m) => {
-      const text = `${m.loc.name}${m.loc.description ? " - " + m.loc.description : ""}`;
-      const textLength = text.length;
-
-      if (textLength > 20) {
-        const zoom = map.getZoom();
-        const baseOffset = 1.0;
-        const offset = (12 - zoom) * baseOffset;
-
-        let offsetLat = m.loc.lat;
-        let offsetLon = m.loc.lon;
-
-        // Zone logic — only horizontal lines
-        if (m.loc.lat >= 23) {
-          // North India
-          offsetLon = m.loc.lon + (m.loc.lon >= northCenter.lon ? offset : -offset);
-        } else if (m.loc.lat <= 15) {
-          // South India
-          if (m.loc.lat <= southCenter.lat) {
-            offsetLon = m.loc.lon + offset; // push right
-          } else {
-            offsetLon = m.loc.lon - offset; // push left
-          }
-        } else {
-          // Middle India
-          offsetLon = m.loc.lon + (m.loc.lon >= middleCenter.lon ? offset : -offset);
-        }
-
-        // Leader line
-        const line = L.polyline([[m.loc.lat, m.loc.lon], [offsetLat, offsetLon]], {
-          color: "darkred",
-          weight: 1
-        }).addTo(map);
-
-        // Label box
-        const labelIcon = L.divIcon({
-          className: 'highlight-label-box',
-          html: `<div>${text}</div>`,
-          iconSize: null
-        });
-        const labelMarker = L.marker([offsetLat, offsetLon], { icon: labelIcon }).addTo(map);
-
-        labelElements.push(line);
-        labelElements.push(labelMarker);
-      } else {
-        // Short text → box directly at marker
-        const labelIcon = L.divIcon({
-          className: 'highlight-label-box',
-          html: `<div>${text}</div>`,
-          iconSize: null
-        });
-        const labelMarker = L.marker([m.loc.lat, m.loc.lon], { icon: labelIcon }).addTo(map);
-
-        labelElements.push(labelMarker);
-      }
-    });
+document.getElementById("enterBtn").addEventListener("click", () => {
+  if (infoBox) {
+    const input = document.getElementById("landmarkInput");
+    const num = parseInt(input.value, 10);
+    if (!isNaN(num) && num >= 1 && num <= markers.length) {
+      const { marker, loc } = markers[num - 1];
+      placeInfoBox(marker.getLatLng(), loc.name);
+    }
   }
-}
+});

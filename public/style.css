@@ -1,10 +1,53 @@
-.highlight-label-box {
-  font-size: 10px;
-  color: darkred;
-  background: white;
-  border: 1px solid darkred;
-  padding: 2px 4px;
-  border-radius: 3px;
-  box-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-  white-space: nowrap;
+body { margin: 0; }
+#map { height: 100vh; }
+
+.infoBox {
+  position: absolute;
+  width: 220px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  text-align: center;
+  z-index: 9999;
+}
+
+#controlBox {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255,255,255,0.95);
+  padding: 15px 25px;
+  border: 2px solid #333;
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+#landmarkInput {
+  width: 150px;
+  padding: 8px;
+  font-size: 18px;
+}
+
+#enterBtn {
+  padding: 8px 16px;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: #0078d7;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#enterBtn:hover {
+  background-color: #005a9e;
 }
