@@ -1,5 +1,17 @@
 const map = L.map('map').setView([22.9734, 78.6569], 5);
 
+const zoom = map.getZoom();
+
+// Base offset in pixels (tune this number)
+const baseOffset = 50;
+
+// Scale factor: bigger push when zoomed out, smaller when zoomed in
+const scale = (12 - zoom); // at zoom 5 → 7, at zoom 12 → 0
+
+let offsetPixels = baseOffset * Math.max(1, scale);
+
+
+
 const squares = [
   L.polygon([
     [36.177, 72.60],[32.40238,73.220],[32.3838,79.966],[36.76,80.559]
@@ -56,11 +68,11 @@ function placeInfoBox(latlng, text) {
   let point = map.latLngToContainerPoint([offsetLat, offsetLng]);
 
   // Push outward in pixels
-  if (latlng.lng < centroidLng) {
-    point.x -= 50; // push left
-  } else {
-    point.x += 50; // push right
-  }
+if (latlng.lng < centroidLng) {
+  point.x -= offsetPixels; // push left
+} else {
+  point.x += offsetPixels; // push right
+}
 
   // Convert back to lat/lng
   let offsetLatLng = map.containerPointToLatLng(point);
@@ -71,9 +83,9 @@ function placeInfoBox(latlng, text) {
 
   while (insideAnother) {
     if (latlng.lng < centroidLng) {
-      point.x -= 50;
+      point.x -= offsetPixels;
     } else {
-      point.x += 50;
+      point.x += offsetPixels;
     }
     offsetLatLng = map.containerPointToLatLng(point);
     testPt = turf.point([offsetLatLng.lng, offsetLatLng.lat]);
