@@ -1,17 +1,5 @@
 const map = L.map('map').setView([22.9734, 78.6569], 5);
 
-const zoom = map.getZoom();
-
-// Base offset in pixels (tune this number)
-const baseOffset = 50;
-
-// Scale factor: bigger push when zoomed out, smaller when zoomed in
-const scale = (12 - zoom); // at zoom 5 → 7, at zoom 12 → 0
-
-let offsetPixels = baseOffset * Math.max(1, scale);
-
-
-
 const squares = [
   L.polygon([
     [36.177, 72.60],[32.40238,73.220],[32.3838,79.966],[36.76,80.559]
@@ -45,6 +33,12 @@ function findSquare(latlng) {
 }
 
 function placeInfoBox(latlng, text) {
+  // ✅ Recalculate offset based on zoom
+  const zoom = map.getZoom();
+  const baseOffset = 50;
+  const scale = (12 - zoom); // at zoom 5 → 7, at zoom 12 → 0
+  let offsetPixels = baseOffset * Math.max(1, scale);
+
   const square = findSquare(latlng);
   if (!square) return;
 
@@ -68,11 +62,11 @@ function placeInfoBox(latlng, text) {
   let point = map.latLngToContainerPoint([offsetLat, offsetLng]);
 
   // Push outward in pixels
-if (latlng.lng < centroidLng) {
-  point.x -= offsetPixels; // push left
-} else {
-  point.x += offsetPixels; // push right
-}
+  if (latlng.lng < centroidLng) {
+    point.x -= offsetPixels; // push left
+  } else {
+    point.x += offsetPixels; // push right
+  }
 
   // Convert back to lat/lng
   let offsetLatLng = map.containerPointToLatLng(point);
@@ -97,8 +91,6 @@ if (latlng.lng < centroidLng) {
   infoBox.textContent = text;
 }
 
-
-
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
@@ -112,6 +104,7 @@ const landmarkIcon = L.icon({
 
 let markers = [];
 let infoBox;
+let currentMarker = null; // ✅ Track current marker
 
 fetch("/locations")
   .then(res => res.json())
@@ -141,7 +134,15 @@ document.getElementById("enterBtn").addEventListener("click", () => {
     const num = parseInt(input.value, 10);
     if (!isNaN(num) && num >= 1 && num <= markers.length) {
       const { marker, loc } = markers[num - 1];
+      currentMarker = { marker, loc }; // ✅ store current marker
       placeInfoBox(marker.getLatLng(), loc.name);
     }
+  }
+});
+
+// ✅ Reposition infoBox on zoom
+map.on("zoomend", () => {
+  if (infoBox && currentMarker) {
+    placeInfoBox(currentMarker.marker.getLatLng(), currentMarker.loc.name);
   }
 });
